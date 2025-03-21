@@ -22,9 +22,10 @@ public class Trip {
 
     /**
      * Constructor for the trip class.
-     * @param startDate the start date of the trip.
-     * @param endDate the end date of the trip.
-     * @param numDays the number of days for the trip.
+     *
+     * @param startDate   the start date of the trip.
+     * @param endDate     the end date of the trip.
+     * @param numDays     the number of days for the trip.
      * @param totalBudget the total budget for the trip.
      */
     public Trip(String name, LocalDate startDate, LocalDate endDate, Integer numDays, Integer totalBudget) {
@@ -50,11 +51,16 @@ public class Trip {
     public void addTransportation(String transportName,
                                   String transportMode,
                                   Integer transportBudget) throws InvalidCommand {
+        Integer initialSize = transportations.size();
         if (isContainsTransportation(transportMode)) {
             throw new InvalidCommand();
         }
         Transportation newTransportation = new Transportation(transportName, transportMode, transportBudget);
         transportations.add(newTransportation);
+
+        assert initialSize == transportations.size() + 1 : "Transportation list size did not increase";
+        assert transportBudget >= 0 : "Budget must be a positive value";
+
         Ui.printAddTransportationMessage(newTransportation);
     }
 
@@ -68,9 +74,13 @@ public class Trip {
     }
 
     public void deleteTransportation(Integer index) throws InvalidCommand {
+        Integer initialSize = transportations.size();
         try {
             Ui.printDeleteTransportationMessage(transportations.get(index - 1));
             transportations.remove(index - 1);
+
+            assert initialSize == transportations.size() - 1 : "Transportation list size did not decrease";
+
         } catch (IndexOutOfBoundsException e) {
             throw new InvalidCommand();
         }
@@ -154,12 +164,18 @@ public class Trip {
     private void buildAccommodationsInfo(StringBuilder tripInfo) {
         for (Accommodation accommodation : accommodations) {
             tripInfo.append(accommodation.toString()).append("\n");
+
+            assert accommodation.toString() != null : "Accommodation information should not be null";
+            assert accommodation.toString().length() > 0 : "Accommodation information should not be empty";
         }
     }
 
     private void buildTransportationsInfo(StringBuilder tripInfo) {
         for (Transportation transportation : transportations) {
             tripInfo.append(transportation.toString()).append("\n");
+
+            assert transportation.toString() != null : "Transportation information should not be null";
+            assert transportation.toString().length() > 0 : "Transportation information should not be empty";
         }
     }
 
@@ -171,6 +187,7 @@ public class Trip {
 
     /**
      * This is a method to print the trip information.
+     *
      * @return String representation of the trip, and its associated transportations and accommodations.
      */
     @Override
