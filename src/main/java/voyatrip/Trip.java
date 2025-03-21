@@ -34,10 +34,15 @@ public class Trip {
         this.totalBudget = totalBudget;
         this.transportations = new ArrayList<>();
         this.accommodations = new ArrayList<>();
+        this.transportations = new ArrayList<>();
     }
 
     public String getName() {
         return name;
+    }
+
+    public ArrayList<Transportation> getTransportations() {
+        return transportations;
     }
 
     public void addTransportation(String transportName,
