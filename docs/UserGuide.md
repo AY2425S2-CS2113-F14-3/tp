@@ -1,39 +1,211 @@
-# User Guide
+# VoyaTrip User Guide
 
 ## Introduction
 
-{Give a product intro}
+VoyaTrip is a command-line application for managing trips.
 
 ## Quick Start
 
 {Give steps to get started quickly}
 
 1. Ensure that you have Java 17 or above installed.
-1. Down the latest version of `Duke` from [here](http://link.to/duke).
+1. Down the latest version of `VoyaTrip` from  [Placeholder](https://).
 
 ## Features 
 
 {Give detailed description of each feature}
 
-### Adding a todo: `todo`
-Adds a new item to the list of todo items.
+### Directory
 
-Format: `todo n/TODO_NAME d/DEADLINE`
+Since there are multiple trips, what is currently being worked on is stored by the mean of directory. Everytime the program starts at the `root`, shown in the program as: `~ >`. When working within a trip, the trip name and the target name is shown as: `~/TRIP_NAME/TARGET_NAME >`. For example: `~/My Trip/Itinerary >`.
 
-* The `DEADLINE` can be in a natural language format.
-* The `TODO_NAME` cannot contain punctuation.  
+### Commands
+
+The commands are usually composed of three main elements:
+- Action
+- Target
+- Argument(s)
+
+A command action is what the command does. Examples are:
+- Adding: `add`
+- Deleting: `delete`
+- Listing: `list`
+- Changing directory: `cd`
+- Exiting the program: `exit`
+
+A command target is what the command affects. Examples are:
+- `trip`
+- `activity` or `act` for short
+- `transportation` or `tran` for short
+- `accommodation` or `accom` for short
+- `itinerary` or `itin` for short
+- Special case for changing to the root directory `..`
+
+Note that the target keyword may be omitted. The program will then use the default target according to the current directory.
+
+An argument consist of a double hyphen (`--`) immediately followed by a keyword and a value: `--<keyword> <value>`. For example: `--name my trip` will have the keyword `name` and the value `my trip`.
+
+List of arguments:
+- `--name <trip name>` or `--n`
+- `--index <trip index>` or `--i`
+- `--budget <total budget>` or `--b`
+- `--start <start date>` or `--s`
+- `--end <end date>` or `--e`
+- `--day <day number>` or `--d`
+- `--time <time>` or `--t`
+- `--mode <transportation mode>` or `--m`
+
+### Adding new trip
+
+Target: `trip`
+
+Action: `add`
+
+Required arguments: `name`, `start`, `end` and `budget`
+
+start date and end date should be in the format `d-M-yyyy` or `d-M` if the year is the current year.
 
 Example of usage: 
 
-`todo n/Write the rest of the User Guide d/next week`
+```
+~ >
+add trip --name my trip --start 1-5 --end 7-5 --budget 1000
 
-`todo n/Refactor the User Guide to remove passive voice d/13/04/2020`
+~ >
+add --n my trip --b 1000 --s 1-5 --e 7-5
+```
+
+### Deleting a trip
+
+Target: `trip`
+
+Action: `delete`
+
+Required arguments: `index` or `name` 
+
+start date and end date should be in the format `d-M-yyyy` or `d-M` if the year is the current year.
+
+Example of usage:
+
+```
+~ >
+delete trip --index 1
+
+~ >
+delete --n my trip
+```
+
+### Changing the current trip currently working on
+
+Target: `trip`
+
+Action: `cd`
+
+Required arguments: `index` or `name`
+
+Example of usage:
+
+```
+~ >
+cd trip --index 1
+
+~ >
+cd --n my trip
+```
+
+Special case for changing to the root directory `cd ..`
+
+### Adding new activity
+
+Action: `add`
+
+Target: `activity`
+
+Required arguments: `name`, `time`, `day`
+
+Example of usage:
+
+```
+~/My Trip/Itinerary >
+add activity --name activity 1 --time 10:00 --day 1
+
+~/My Trip/Itinerary >
+add --d 1 --t 10:00 --n my activity 1
+```
+
+### Adding new transportation
+
+Action: `add`
+
+Target: `transportation`
+
+Required arguments: `name`, `mode`, `budget`
+
+Example of usage:
+
+```
+~/My Trip/Transportation >
+add transportation --name airplane --mode air --budget 350
+
+~/My Trip/Transportation >
+add --n airplane --b 350 --m air
+```
+
+### Adding new accommodation
+
+Action: `add`
+
+Target: `accommodation`
+
+Required arguments: `name`, `budget`
+
+Example of usage:
+
+```
+~/My Trip/Accommodation >
+add accommodation --name hotel --budget 500
+
+~/My Trip/Accommodation >
+add --n hotel --b 500
+```
+
+### Listing trips
+
+Action: `list`
+
+Target: `trip`
+
+Required arguments: `index` or `name`
+
+Special case for listing all trips `list trip --all`
+
+Example of usage:
+
+```
+~ >
+list trip --index 1
+
+~ >
+list --n my trip
+```
+
+### Exiting the program
+
+Action: `exit`
 
 ## FAQ
 
-**Q**: How do I transfer my data to another computer? 
+**Q**: Will extra spaces be ignored?
 
-**A**: {your answer here}
+**A**: Yes, unless those extra spaces are within the argument.
+
+**Q**: Are the commands case-sensitive?
+
+**A**: The case of the keywords in the commands (action, target and argument keywords) are not case-sensitive.
+
+**Q**: Do the arguments have a specific order to follow?
+
+**A**: No, the arguments can be arranged in any order as long as it is after the command action and target.
 
 ## Command Summary
 
