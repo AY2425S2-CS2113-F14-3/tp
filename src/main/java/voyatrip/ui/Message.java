@@ -32,4 +32,20 @@ public class Message {
     public static String getInvalidCommandMessage() {
         return INVALID_COMMAND_MESSAGE;
     }
+
+    public static String getAddTripMessage() {
+        return ADD_TRIP_MESSAGE;
+    }
+
+    public static String getDeleteTripMessage() {
+        return DELETE_TRIP_MESSAGE;
+    }
+
+    public static String getNextCommandMessage() {
+        return NEXT_COMMAND_MESSAGE;
+    }
+
+    public static String getTripNotFoundMessage() {
+        return TRIP_NOT_FOUND_MESSAGE;
+    }
 }
