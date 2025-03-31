@@ -58,8 +58,9 @@ public class Trip {
     public void addTransportation(String transportName,
                                   String transportMode,
                                   Integer transportBudget) throws InvalidCommand {
-        logger.log(Level.INFO, "Adding transportation");
-        if (isContainsTransportation(transportMode)) {
+
+        logger.log(Level.INFO, "Adding Transportation")
+        if (isContainsTransportation(transportName)) {
             logger.log(Level.WARNING, "Transportation already exists");
             throw new InvalidCommand();
         }
@@ -69,7 +70,8 @@ public class Trip {
         logger.log(Level.INFO, "Finished adding transportation");
     }
 
-    private boolean isContainsTransportation(String transportName) {
+
+    public boolean isContainsTransportation(String transportName) {
         logger.log(Level.INFO, "Checking if transportation exists");
         for (Transportation transportation : transportations) {
             if (transportation.getName().equals(transportName)) {
