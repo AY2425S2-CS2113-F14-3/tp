@@ -8,7 +8,6 @@ import voyatrip.command.exceptions.InvalidCommandAction;
 import voyatrip.command.exceptions.InvalidCommandTarget;
 import voyatrip.command.exceptions.InvalidDateFormat;
 import voyatrip.command.exceptions.InvalidNumberFormat;
-import voyatrip.command.exceptions.InvalidScope;
 import voyatrip.command.exceptions.MissingArgument;
 import voyatrip.command.exceptions.MissingCommandKeyword;
 import voyatrip.command.types.AccommodationCommand;
@@ -71,7 +70,6 @@ public class Parser {
      * @throws InvalidCommandAction If the command action is invalid.
      * @throws InvalidDateFormat If the date format is invalid.
      * @throws InvalidNumberFormat If the number format is invalid.
-     * @throws InvalidScope If the scope of the command is invalid.
      * @throws MissingArgument If there is missing argument.
      * @throws MissingCommandKeyword If there is missing command keyword.
      */
@@ -82,7 +80,6 @@ public class Parser {
             InvalidCommandAction,
             InvalidDateFormat,
             InvalidNumberFormat,
-            InvalidScope,
             MissingArgument,
             MissingCommandKeyword {
         CommandAction commandAction = extractCommandAction(command);
@@ -100,7 +97,7 @@ public class Parser {
             commandAction = CommandAction.MODIFY_TRIP_WITHOUT_INDEX;
         }
 
-        validateScope(commandTarget);
+        validateTarget(commandTarget);
 
         return matchCommand(commandAction, commandTarget, arguments);
     }
@@ -134,7 +131,8 @@ public class Parser {
         };
     }
 
-    private CommandTarget extractCommandTargetType(String command, CommandAction commandAction) {
+    private CommandTarget extractCommandTargetType(String command, CommandAction commandAction)
+            throws InvalidCommandTarget {
         String[] spaceSeparatedTokens = command.strip().split("\\s+");
         if (spaceSeparatedTokens.length == 1) {
             return currentTarget;
@@ -153,11 +151,15 @@ public class Parser {
         case "activity", "act" -> CommandTarget.ACTIVITY;
         case "accommodation", "accom" -> CommandTarget.ACCOMMODATION;
         case "transportation", "tran" -> CommandTarget.TRANSPORTATION;
-        default -> getAdjustedCurrentTarget(commandAction);
+        default -> getAdjustedCurrentTarget(commandAction, commandTarget);
         };
     }
 
-    private CommandTarget getAdjustedCurrentTarget(CommandAction action) {
+    private CommandTarget getAdjustedCurrentTarget(CommandAction action, String target) throws InvalidCommandTarget {
+        if(!target.matches("--\\w+")) {
+            throw new InvalidCommandTarget();
+        }
+
         boolean isAddDeleteModify = action == CommandAction.ADD ||
                 action == CommandAction.DELETE_BY_INDEX ||
                 action == CommandAction.MODIFY;
@@ -169,12 +171,12 @@ public class Parser {
         }
     }
 
-    private void validateScope(CommandTarget commandTarget) throws InvalidScope {
+    private void validateTarget(CommandTarget commandTarget) throws InvalidCommandTarget {
         // target scope too small
-        boolean isIncorrectScope = !commandTarget.equals(CommandTarget.TRIP) && currentTarget == CommandTarget.TRIP;
+        boolean isInvalidTarget = !commandTarget.equals(CommandTarget.TRIP) && currentTarget == CommandTarget.TRIP;
 
-        if (isIncorrectScope) {
-            throw new InvalidScope();
+        if (isInvalidTarget) {
+            throw new InvalidCommandTarget();
         }
     }
 
