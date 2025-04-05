@@ -178,6 +178,21 @@ add transportation --name airplane --mode air --budget 350 --start 1 --end 2
 add --n airplane --b 350 --m air --s 1 --e 2
 ```
 
+### Modifying the transportation
+
+Target: `transportation`
+
+Action: `modify`
+
+Required arguments: `index`, `name`, `budget`, `start` (start day of transportation), `end` (end day of transportation)
+
+Example of usage:
+
+```
+~/My Trip/Itinerary >
+modify transportation --index 1 --n Flybyme --m Air --b 1200 --s 3 --e 6 
+```
+
 ## Accommodation
 Note that for all operations related to accommodation, you should ensure that you are in the directory/trip 
 which you want to make these operations in, or else you should first change directory to the trip. For example, 
